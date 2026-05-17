@@ -31,33 +31,7 @@ function getGroupLabel(params: {
   if (params.labelOverride) return params.labelOverride
   if (params.isEmptyGroup) return params.t('User Group')
   if (params.isAutoGroup) return params.t('Auto')
-  return getUserGroupDisplayName(params.groupName)
-}
-
-export function getUserGroupDisplayName(group?: string | null): string {
-  const groupName = group?.trim()
-  if (!groupName) return ''
-
-  const normalized = groupName.toLowerCase()
-  if (
-    normalized === 'default' ||
-    normalized === 'personal' ||
-    normalized === 'free' ||
-    normalized === 'basic'
-  ) {
-    return 'Personal User'
-  }
-
-  if (
-    normalized === 'enterprise' ||
-    normalized === 'business' ||
-    normalized === 'company' ||
-    normalized === 'team'
-  ) {
-    return 'Enterprise User'
-  }
-
-  return groupName
+  return params.groupName ?? ''
 }
 
 export function GroupBadge(props: GroupBadgeProps) {
