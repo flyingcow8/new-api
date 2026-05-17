@@ -4,6 +4,7 @@ import { formatCompactNumber, formatQuota } from '@/lib/format'
 import { getRoleLabel } from '@/lib/roles'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
+import { getUserGroupDisplayName } from '@/components/group-badge'
 import { StatusBadge } from '@/components/status-badge'
 import { getUserInitials, getDisplayName } from '../lib'
 import type { UserProfile } from '../types'
@@ -113,7 +114,9 @@ export function ProfileHeader({ profile, loading }: ProfileHeaderProps) {
               {profile.group && (
                 <>
                   <span>•</span>
-                  <span className='truncate'>{profile.group}</span>
+                  <span className='truncate'>
+                    {getUserGroupDisplayName(profile.group)}
+                  </span>
                 </>
               )}
             </div>

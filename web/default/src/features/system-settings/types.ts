@@ -77,6 +77,9 @@ export type AuthSettings = {
   GitHubOAuthEnabled: boolean
   GitHubClientId: string
   GitHubClientSecret: string
+  GoogleOAuthEnabled: boolean
+  GoogleClientId: string
+  GoogleClientSecret: string
   'discord.enabled': boolean
   'discord.client_id': string
   'discord.client_secret': string
