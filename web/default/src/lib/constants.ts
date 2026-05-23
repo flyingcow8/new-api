@@ -21,8 +21,8 @@ For commercial licensing, please contact support@quantumnous.com
  */
 
 // System Configuration Defaults
-export const DEFAULT_SYSTEM_NAME = 'InfiniTokens'
-export const DEFAULT_LOGO = '/infinitokens-icon.svg'
+export const DEFAULT_SYSTEM_NAME = 'tokrus'
+export const DEFAULT_LOGO = '/tokrus-icon.svg'
 
 // LocalStorage Keys
 export const STORAGE_KEYS = {

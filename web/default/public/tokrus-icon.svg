@@ -1,0 +1,20 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>tokrus icon</title>
+  <defs>
+    <linearGradient id="tokrus-ring" x1="132" y1="168" x2="380" y2="344" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#14C8FF"/>
+      <stop offset="0.48" stop-color="#2D6BFF"/>
+      <stop offset="1" stop-color="#8A2FFF"/>
+    </linearGradient>
+    <radialGradient id="tokrus-surface" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(176 150) rotate(48) scale(380)">
+      <stop offset="0" stop-color="#071A4A"/>
+      <stop offset="1" stop-color="#020B2A"/>
+    </radialGradient>
+  </defs>
+  <rect x="54" y="54" width="404" height="404" rx="92" fill="url(#tokrus-surface)"/>
+  <circle cx="256" cy="256" r="136" stroke="url(#tokrus-ring)" stroke-width="52"/>
+  <path
+    d="M256 168C263.8 204.8 278.8 229.2 344 256C278.8 282.8 263.8 307.2 256 344C248.2 307.2 233.2 282.8 168 256C233.2 229.2 248.2 204.8 256 168Z"
+    fill="#FFFFFF"
+  />
+</svg>
