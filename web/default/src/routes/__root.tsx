@@ -33,6 +33,7 @@ import { GeneralError } from '@/features/errors/general-error'
 import { NotFoundError } from '@/features/errors/not-found-error'
 import { getSetupStatus } from '@/features/setup/api'
 import { saveAffiliateCode } from '@/features/auth/lib/storage'
+import { useAuthStore } from '@/stores/auth-store'
 
 function RootComponent() {
   // Load system configuration (logo, system name, etc.) from backend
@@ -92,6 +93,37 @@ function setSetupStatusCache(value: boolean): void {
 // 内存中的标记，避免同一会话中重复检查
 let setupStatusChecked = getSetupStatusFromCache()
 
+const PUBLIC_AUTH_PATHS = [
+  '/sign-in',
+  '/sign-up',
+  '/forgot-password',
+  '/reset',
+  '/otp',
+  '/oauth',
+  '/user/reset',
+  '/setup',
+  '/privacy-policy',
+  '/user-agreement',
+]
+
+function isPublicPath(pathname: string): boolean {
+  return PUBLIC_AUTH_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`)
+  )
+}
+
+function saveAffiliateCodeFromCurrentUrl(): void {
+  try {
+    if (typeof window === 'undefined') return
+    const aff = new URLSearchParams(window.location.search).get('aff')?.trim()
+    if (aff) {
+      saveAffiliateCode(aff)
+    }
+  } catch {
+    /* empty */
+  }
+}
+
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
 }>()({
@@ -100,11 +132,6 @@ export const Route = createRootRouteWithContext<{
     const pathname = location?.pathname || ''
     const needsSetupCheck =
       !setupStatusChecked && !pathname.startsWith('/setup')
-
-    // 用户信息已通过 auth-store 从 localStorage 恢复
-    // 如果 auth.user 存在，说明用户已登录（有缓存的用户数据）
-    // 如果 auth.user 为 null，说明用户未登录，直接让 _authenticated 路由处理重定向
-    // 不再调用 getSelf() API，避免不必要的网络请求和等待
 
     // 只检查 setup 状态（如果需要）
     if (needsSetupCheck) {
@@ -122,8 +149,18 @@ export const Route = createRootRouteWithContext<{
       setupStatusChecked = true
       setSetupStatusCache(true)
     }
-    // 用户认证状态完全依赖 localStorage 缓存
-    // 如果用户有有效 session 但 localStorage 被清空，会被重定向到登录页重新登录
+
+    saveAffiliateCodeFromCurrentUrl()
+
+    // 用户认证状态依赖 auth-store 从 localStorage 恢复。
+    // 未登录用户访问非认证/初始化/协议页面时，统一进入登录页。
+    const { auth } = useAuthStore.getState()
+    if (!auth.user && !isPublicPath(pathname)) {
+      throw redirect({
+        to: '/sign-in',
+        search: { redirect: location.href },
+      })
+    }
   },
   component: RootComponent,
   notFoundComponent: NotFoundError,
